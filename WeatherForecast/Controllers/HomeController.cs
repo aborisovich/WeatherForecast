@@ -23,9 +23,14 @@ namespace WeatherForecast.Controllers
 
         public IActionResult Index()
         {
+            if (!configuration.GetSection("AppSettings").Exists())
+                throw new ApplicationException("Configuration file is missing AppSettings section");
             if (!configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Exists())
                 throw new ApplicationException("Google Maps API key is missing from configuration file");
+            if (!configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Exists())
+                throw new ApplicationException("Open Weather Map API key is missing from configuration file");
             ViewBag.GoogleApiKey = configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Value;
+            ViewBag.OpenWeatherMapApiKey = configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Value;
             return View();
         }
 

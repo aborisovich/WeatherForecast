@@ -1,11 +1,11 @@
 ﻿@{
-	ViewData["Title"] = "Weather Forecast";
+    ViewData["Title"] = "Weather Forecast";
 }
 
 <div class="row">
-	<div class="col-md-6">
-		Weather
-	</div>
+    <div class="col-md-6">
+        Weather
+    </div>
     <div class="col-md-6">
         <div id="map" style="height:400px; width:400px;"></div>
         <script>
@@ -18,7 +18,7 @@
                     });
             }
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfO0stt4QvHuv-AvjcJcnMMATH2fdCPDI&callback=initMap"
+        <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&callback=initMap"
                 async defer></script>
     </div>
 </div>

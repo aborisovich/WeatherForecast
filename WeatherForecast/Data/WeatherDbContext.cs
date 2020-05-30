@@ -13,7 +13,5 @@ namespace WeatherForecast.Data
 
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
-
-
     }
 }

@@ -30,7 +30,6 @@ namespace WeatherForecast.Controllers
             if (!configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Exists())
                 throw new ApplicationException("Open Weather Map API key is missing from configuration file");
             ViewBag.GoogleApiKey = configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Value;
-            ViewBag.OpenWeatherMapApiKey = configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Value;
             return View();
         }
 

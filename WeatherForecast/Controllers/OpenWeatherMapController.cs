@@ -29,9 +29,9 @@ namespace WeatherForecast.Controllers
         private string ApiKey { get; set; }
         private readonly string apiUrl;
 
-        public OpenWeatherMapController(IConfiguration configuration)
+        public OpenWeatherMapController(IConfiguration configuration, IHttpClientFactory clientFactory)
         {
-            apiClient = HttpClientFactory.Create();
+            apiClient = clientFactory.CreateClient();
             IConfigurationSection appSettings = configuration.GetSection("AppSettings");
             if (appSettings == null)
                 throw new ApplicationException("Application configuration file is malformed. AppSettings section is missing");

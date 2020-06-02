@@ -31,6 +31,8 @@ namespace WeatherForecast
 
             services.AddDbContext<WeatherDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WeatherForecastDBConnection")));
+
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

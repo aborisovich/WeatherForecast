@@ -10,8 +10,8 @@ using WeatherForecast.Data;
 namespace WeatherForecast.Migrations
 {
     [DbContext(typeof(WeatherDbContext))]
-    [Migration("20200602152056_RemovedLatitudeAndLogitudeFromCity")]
-    partial class RemovedLatitudeAndLogitudeFromCity
+    [Migration("20200603113748_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,7 +59,7 @@ namespace WeatherForecast.Migrations
             modelBuilder.Entity("WeatherForecast.Models.City", b =>
                 {
                     b.HasOne("WeatherForecast.Models.Country", "Country")
-                        .WithMany("Cities")
+                        .WithMany()
                         .HasForeignKey("CountryId");
                 });
 #pragma warning restore 612, 618

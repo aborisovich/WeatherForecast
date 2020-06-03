@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WeatherForecast.Data;
@@ -24,6 +27,16 @@ namespace WeatherForecast.Controllers
             this.configuration = configuration;
             this.dbContext = dbContext;
             PopulateDb();
+            foreach (var item in dbContext.Countries.ToList())
+            {
+                Console.WriteLine($"Country: {item.Name}");
+                List<City> cities = dbContext.Cities.Where(col => col.Country.Id == item.Id).ToList();
+                Console.WriteLine($"Cities count: {cities.Count}");
+                foreach(var item2 in cities)
+                {
+                    Console.WriteLine($"City: {item2.Name}");
+                }
+            }
         }
 
         public IActionResult Index()
@@ -35,6 +48,7 @@ namespace WeatherForecast.Controllers
             if (!configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Exists())
                 throw new ApplicationException("Open Weather Map API key is missing from configuration file");
             ViewBag.GoogleApiKey = configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Value;
+            ViewBag.ListOfCountries = new SelectList(dbContext.Countries, "Id", "Name");
             return View();
         }
 
@@ -49,6 +63,14 @@ namespace WeatherForecast.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [HttpPost]
+        public IActionResult SelectCountry(Country model)
+        {
+            
+            //ViewBag.ListOfCities =
+            return View();
+        }
+
         /// <summary>
         /// Populates database with Countries and Cities.
         /// </summary>
@@ -58,17 +80,17 @@ namespace WeatherForecast.Controllers
             if (!dbContext.Countries.Where(item => item.Name == "England").Any())
             {
                 Country england = new Country { Name = "England" };
-                dbContext.Add(england);
+                dbContext.Countries.Add(england);
             }
             if (!dbContext.Countries.Where(item => item.Name == "Russia").Any())
             {
                 Country russia = new Country { Name = "Russia" };
-                dbContext.Add(russia);
+                dbContext.Countries.Add(russia);
             }
             if (!dbContext.Countries.Where(item => item.Name == "USA").Any())
             {
                 Country usa = new Country { Name = "USA" };
-                dbContext.Add(usa);
+                dbContext.Countries.Add(usa);
             }
             dbContext.SaveChanges();
 
@@ -78,32 +100,22 @@ namespace WeatherForecast.Controllers
                 City london = new City { Name = "London" };
                 Country england = dbContext.Countries.First(item => item.Name == "England");
                 london.Country = england;
-                if (england.Cities == null)
-                    england.Cities = new List<City>() { london };
-                else
-                    england.Cities.Add(london);
+                dbContext.Cities.Add(london);
             }
             if (!dbContext.Cities.Where(item => item.Name == "Moscow").Any())
             {
                 City moscow = new City { Name = "Moscow" };
                 Country russia = dbContext.Countries.First(item => item.Name == "Russia");
                 moscow.Country = russia;
-                if (russia.Cities == null)
-                    russia.Cities = new List<City>() { moscow };
-                else
-                    russia.Cities.Add(moscow);
+                dbContext.Cities.Add(moscow);
             }
             if (!dbContext.Cities.Where(item => item.Name == "New York").Any())
             {
                 City newYork = new City { Name = "New York" };
                 Country usa = dbContext.Countries.First(item => item.Name == "USA");
                 newYork.Country = usa;
-                if (usa.Cities == null)
-                    usa.Cities = new List<City>() { newYork };
-                else
-                    usa.Cities.Add(newYork);
+                dbContext.Cities.Add(newYork);
             }
-            dbContext.SaveChanges();
         }
     }
 }

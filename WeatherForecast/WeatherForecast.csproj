@@ -7,6 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200530165450_InitialMigration.cs" />
+    <Compile Remove="Migrations\20200530165450_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200602152056_RemovedLatitudeAndLogitudeFromCity.cs" />
+    <Compile Remove="Migrations\20200602152056_RemovedLatitudeAndLogitudeFromCity.Designer.cs" />
+    <Compile Remove="Migrations\20200602181849_Removed List of Cities from Country.cs" />
+    <Compile Remove="Migrations\20200602181849_Removed List of Cities from Country.Designer.cs" />
+    <Compile Remove="Migrations\20200603105326_ChangedCitiesToICollection.cs" />
+    <Compile Remove="Migrations\20200603105326_ChangedCitiesToICollection.Designer.cs" />
+    <Compile Remove="Migrations\20200603112707_InitialMigration.cs" />
+    <Compile Remove="Migrations\20200603112707_InitialMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">

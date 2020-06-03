@@ -26,9 +26,7 @@ namespace WeatherForecast.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    CountryId = table.Column<int>(nullable: true),
-                    Latitude = table.Column<double>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false)
+                    CountryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

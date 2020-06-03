@@ -57,7 +57,7 @@ namespace WeatherForecast.Migrations
             modelBuilder.Entity("WeatherForecast.Models.City", b =>
                 {
                     b.HasOne("WeatherForecast.Models.Country", "Country")
-                        .WithMany("Cities")
+                        .WithMany()
                         .HasForeignKey("CountryId");
                 });
 #pragma warning restore 612, 618

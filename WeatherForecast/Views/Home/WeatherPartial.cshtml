@@ -1,0 +1,22 @@
+﻿@model City
+
+<div class="row">
+    <div class="col-md-6">
+        <a asp-controller="OpenWeatherMap" asp-action="api/OpenWeatherMap" asp-route-id="@Model.Name" />
+    </div>
+    <div class="col-md-6">
+        <div id="map" style="height:400px; width:400px;"></div>
+        <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'),
+                {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 8
+                });
+        }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&callback=initMap"
+                async defer></script>
+    </div>
+</div>

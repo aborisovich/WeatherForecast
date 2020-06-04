@@ -1,33 +1,21 @@
-﻿@{
+﻿@model City;
+@{
     ViewData["Title"] = "Weather Forecast";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-controller="Home" asp-action="SelectCountry">
-            <select asp-items="@ViewBag.ListOfCountries">
-                <option>Please select one</option>
-            </select>
-            <select asp-items="@ViewBag.ListOfCities">
-                <option>Please select one</option>
-            </select>
-            <input type="submit" />
-        </form>
-    </div>
-    <div class="col-md-6">
-        <div id="map" style="height:400px; width:400px;"></div>
-        <script>
-            var map;
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'),
-                    {
-                        center: { lat: -34.397, lng: 150.644 },
-                        zoom: 8
-                    });
-            }
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&callback=initMap"
-                async defer></script>
-    </div>
+<h6>Select location to display current weather</h6>
+<form asp-controller="Home" method="post">
+    @{
+        <select asp-for="Name" asp-items="@ViewBag.listOfCities"></select>
+        <button type="submit" asp-action="WeatherPartial" class="btn-dark">Show Weather</button>
+    }
+</form>
+
+<div>
+    @*@if ((bool)ViewData["LocationSelected"])
+    {
+        <partial name="WeatherPartial" model="@ViewBag.ListOfCities.SelectedValue" />
+    }*@
 </div>
+
 

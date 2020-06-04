@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GeoCoordinatePortable;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ namespace WeatherForecast.Services
     public class WeatherProvider
     {
         private readonly OpenWeatherMapController weatherApi;
+        private readonly Dictionary<string, GeoCoordinate> cityLocations;
         public WeatherProvider(OpenWeatherMapController weatherApi)
         {
             this.weatherApi = weatherApi;
+            cityLocations = new Dictionary<string, GeoCoordinate>();
         }
 
         public async Task<Dictionary<string, string>> GetCurrentWeatherInfo(string cityName)
@@ -32,7 +35,20 @@ namespace WeatherForecast.Services
             weatherOutput.Add("Pressure", jsonData["main"]["pressure"].ToString() + "hPa");
             weatherOutput.Add("Humidity", jsonData["main"]["humidity"].ToString() + "%");
             weatherOutput.Add("Wind speed", jsonData["wind"]["speed"].ToString() + "km/h");
+
+            if (!cityLocations.ContainsKey(cityName))
+            {
+                cityLocations.Add(cityName, new GeoCoordinate(
+                    latitude: double.Parse(jsonData["coord"]["lat"].ToString()),
+                    longitude: double.Parse(jsonData["coord"]["lon"].ToString())
+                    ));
+            }
             return weatherOutput;
+        }
+
+        public GeoCoordinate GetGeoLocation(string cityName)
+        {
+            return cityLocations.ContainsKey(cityName) ? cityLocations[cityName] : null;
         }
     }
 }

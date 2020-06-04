@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WeatherForecast.Data;
 using WeatherForecast.Models;
+using WeatherForecast.Services;
 
 namespace WeatherForecast.Controllers
 {
@@ -21,11 +23,12 @@ namespace WeatherForecast.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration configuration;
-        private WeatherDbContext dbContext;
+        private readonly WeatherDbContext dbContext;
+        private readonly WeatherProvider weatherProvider;
         private SelectList listOfCountries;
         private SelectList listOfCities;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, WeatherDbContext dbContext)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, WeatherDbContext dbContext, WeatherProvider weatherProvider)
         {
             _logger = logger;
             this.configuration = configuration;
@@ -39,6 +42,7 @@ namespace WeatherForecast.Controllers
                 throw new ApplicationException("Google Maps API key is missing from configuration file");
             if (!configuration.GetSection("AppSettings").GetSection("OpenWeatherMapApiKey").Exists())
                 throw new ApplicationException("Open Weather Map API key is missing from configuration file");
+            this.weatherProvider = weatherProvider;
         }
 
         public IActionResult Index()
@@ -59,10 +63,11 @@ namespace WeatherForecast.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult WeatherPartial(City cityName)
+        public async Task<IActionResult> CurrentWeather(City cityName)
         {
             ViewBag.GoogleApiKey = configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Value;
-            return PartialView("WeatherPartial", dbContext.Cities.First(item => item.Name == cityName.Name));
+            Dictionary<string, string> weatherData = await weatherProvider.GetCurrentWeatherInfo(cityName.Name);
+            return PartialView("CurrentWeather", dbContext.Cities.First(item => item.Name == cityName.Name));
         }
 
         /// <summary>

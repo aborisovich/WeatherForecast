@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WeatherForecast.Data;
+using WeatherForecast.Services;
+using WeatherForecast.Controllers;
 
 namespace WeatherForecast
 {
@@ -33,6 +35,8 @@ namespace WeatherForecast
                 options.UseSqlServer(Configuration.GetConnectionString("WeatherForecastDBConnection")));
 
             services.AddHttpClient();
+            services.AddTransient<OpenWeatherMapController>();
+            services.AddTransient<WeatherProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

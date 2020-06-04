@@ -7,7 +7,7 @@
 <form asp-controller="Home" method="post">
     @{
         <select asp-for="Name" asp-items="@ViewBag.listOfCities"></select>
-        <button type="submit" asp-action="WeatherPartial" class="btn-dark">Show Weather</button>
+        <button type="submit" asp-action="CurrentWeather" class="btn-dark">Show Weather</button>
     }
 </form>
 

@@ -2,21 +2,22 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-controller="OpenWeatherMap" method="get">
-            <a asp-action="GetWeather" asp-route-id="@Model.Name"></a>
-        </form>
+        @foreach(var entry in (Dictionary<string, string>)ViewData["WeatherData"])
+        {
+            <h6>@entry.Key : @entry.Value</h6>
+        }
     </div>
     <div class="col-md-6">
         <div id="map" style="height:400px; width:400px;"></div>
         <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'),
-                {
-                    center: { lat: -34.397, lng: 150.644 },
-                    zoom: 8
-                });
-        }
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'),
+                    {
+                        center: { lat: -34.397, lng: 150.644 },
+                        zoom: 8
+        });
+}
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&callback=initMap"
                 async defer></script>

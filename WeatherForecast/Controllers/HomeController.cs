@@ -69,7 +69,10 @@ namespace WeatherForecast.Controllers
             ViewBag.GoogleApiKey = configuration.GetSection("AppSettings").GetSection("GoogleMapsApiKey").Value;
             Dictionary<string, string> weatherData = await weatherProvider.GetCurrentWeatherInfo(cityName.Name);
             GeoCoordinate cityLocation = weatherProvider.GetGeoLocation(cityName.Name);
-            return PartialView("CurrentWeather", dbContext.Cities.First(item => item.Name == cityName.Name));
+            ViewData["WeatherData"] = weatherData;
+            ViewData["Latitude"] = cityLocation.Latitude;
+            ViewData["Longitude"] = cityLocation.Longitude;
+            return View("CurrentWeather", dbContext.Cities.First(item => item.Name == cityName.Name));
         }
 
         /// <summary>

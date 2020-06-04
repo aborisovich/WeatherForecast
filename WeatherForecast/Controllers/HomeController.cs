@@ -120,6 +120,7 @@ namespace WeatherForecast.Controllers
                 newYork.Country = usa;
                 dbContext.Cities.Add(newYork);
             }
+            dbContext.SaveChanges();
         }
     }
 }
